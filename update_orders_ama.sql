@@ -1,0 +1,1 @@
+ALTER TABLE orders ADD COLUMN outside_ama TINYINT(1) DEFAULT 0;
