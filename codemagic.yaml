@@ -1,0 +1,48 @@
+# Codemagic CI/CD configuration for Meranti Beading
+# Reference: https://docs.codemagic.io/yaml-basic-configuration/yaml-getting-started/
+
+workflows:
+  ios-app-store:
+    name: iOS App Store Release
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      groups:
+        - app_store_credentials # Define these in Codemagic UI: APP_STORE_CONNECT_KEY, APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Set up code signing settings
+        script: |
+          keychain initialize
+          # Fetch profiles and certificates from App Store Connect integration
+          app-store-connect fetch-signing-files "com.meranti.beading.merantibeading" --project-id " Runner" --type IOS_APP_STORE --install
+          keychain add-certificates
+      - name: Set up project configuration
+        script: |
+          # Ensure clean environment
+          flutter clean
+          flutter pub get
+      - name: Install CocoaPods
+        script: |
+          cd ios
+          pod install
+      - name: Build IPA for App Store
+        script: |
+          # Increment build number automatically
+          NEW_BUILD_NUMBER=$(($(app-store-connect get-latest-testflight-build-number --bundle-id com.meranti.beading.merantibeading) + 1))
+          flutter build ipa --release \
+            --build-number=$NEW_BUILD_NUMBER \
+            --export-method=app-store
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        # Required for publishing
+        # issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        # key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        # private_key: $APP_STORE_CONNECT_KEY
+        submit_to_testflight: true
+        submit_to_review: false
