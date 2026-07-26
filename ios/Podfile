@@ -1,4 +1,3 @@
-# Set platform to 15.0 for Stripe and Google Maps compatibility
 platform :ios, '15.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
@@ -12,15 +11,32 @@ project 'Runner', {
 
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
+
   unless File.exist?(generated_xcode_build_settings_path)
-    raise "Generated.xcconfig must exist. If you're running pod install manually, make sure flutter pub get is executed first"
+    raise "Generated.xcconfig must exist. Please run 'flutter pub get' on this Mac first."
   end
 
+  path = nil
   File.foreach(generated_xcode_build_settings_path) do |line|
     matches = line.match(/\s*FLUTTER_ROOT\s*=\s*(.*)/)
-    return matches[1].strip if matches
+    if matches
+      path = matches[1].strip
+      break
+    end
   end
-  raise "FLUTTER_ROOT not found in Generated.xcconfig. Try deleting Generated.xcconfig and regenerate it by running flutter pub get"
+
+  # Check if the path looks like a Windows path (contains backslashes or drive letters)
+  if path.nil? || path.include?('\\') || path.include?(':')
+    # Try to find flutter path automatically on Mac
+    auto_path = `which flutter`.strip
+    if auto_path.empty?
+      raise "Windows paths detected in Generated.xcconfig and 'flutter' command not found in PATH. Please run 'flutter pub get' on this Mac."
+    end
+    # 'which flutter' gives path to bin/flutter, we need the root
+    return File.expand_path(File.join('..', '..'), auto_path)
+  end
+
+  return path
 end
 
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
@@ -36,7 +52,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
 
-    # Ensure all targets use iOS 15.0 to avoid version conflicts
+    # Force 15.0 for all pods to avoid Stripe/GoogleMaps version mismatches
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
     end
