@@ -21,13 +21,18 @@ workflows:
           keychain add-certificates
       - name: Set up project configuration
         script: |
-          # Ensure clean environment
+          # Ensure clean environment and fix Windows paths
+          rm -f ios/Flutter/Generated.xcconfig
+          rm -f .flutter-plugins-dependencies
           flutter clean
           flutter pub get
       - name: Install CocoaPods
         script: |
           cd ios
-          pod install
+          # Clean pods and reinstall
+          rm -rf Pods
+          rm -f Podfile.lock
+          pod install --repo-update
       - name: Build IPA for App Store
         script: |
           # Increment build number automatically
