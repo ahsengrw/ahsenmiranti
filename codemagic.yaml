@@ -29,6 +29,8 @@ workflows:
           rm -f .flutter-plugins-dependencies
           flutter clean
           flutter pub get
+          # Generate icons for iOS (mandatory 1024x1024 store icon)
+          dart run flutter_launcher_icons
       - name: Install CocoaPods
         script: |
           cd ios
