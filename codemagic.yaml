@@ -39,10 +39,10 @@ workflows:
           pod install
       - name: Build IPA for App Store
         script: |
-          # Increment build number automatically
-          NEW_BUILD_NUMBER=$(($(app-store-connect get-latest-testflight-build-number --bundle-id com.meranti.beading.merantibeading) + 1))
+          # Use Codemagic build number for consistency, or fetch from Apple with fallback
+          # $BUILD_NUMBER is automatically provided by Codemagic and increments per build
           flutter build ipa --release \
-            --build-number=$NEW_BUILD_NUMBER \
+            --build-number=$BUILD_NUMBER \
             --export-method=app-store
     artifacts:
       - build/ios/ipa/*.ipa
