@@ -33,7 +33,7 @@ class _DriverDashboardState extends State<DriverDashboard> {
   int _unreadCount = 0;
 
   Timer? _pollingTimer;
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  AudioPlayer? _audioPlayer;
   int _highestKnownOrderId = 0;
 
   LatLng? _driverLocation;
@@ -47,6 +47,7 @@ class _DriverDashboardState extends State<DriverDashboard> {
   @override
   void initState() {
     super.initState();
+    _initAudioPlayer();
     _loadUserData();
     _loadMarkerIcons();
     _initializeLocation();
@@ -57,8 +58,16 @@ class _DriverDashboardState extends State<DriverDashboard> {
   @override
   void dispose() {
     _pollingTimer?.cancel();
-    _audioPlayer.dispose();
+    _audioPlayer?.dispose();
     super.dispose();
+  }
+
+  void _initAudioPlayer() {
+    try {
+      _audioPlayer = AudioPlayer();
+    } catch (e) {
+      debugPrint("AudioPlayer init failed: $e");
+    }
   }
 
   Future<void> _loadMarkerIcons() async {
@@ -251,8 +260,9 @@ class _DriverDashboardState extends State<DriverDashboard> {
   }
 
   void _playNewOrderSound() async {
+    if (_audioPlayer == null) return;
     try {
-      await _audioPlayer.play(AssetSource('audio/notification.mp3'));
+      await _audioPlayer!.play(AssetSource('audio/notification.mp3'));
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('🔔 New Order Available!'),
