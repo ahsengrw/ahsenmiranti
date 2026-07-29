@@ -33,7 +33,6 @@ class _DriverDashboardState extends State<DriverDashboard> {
   int _unreadCount = 0;
 
   Timer? _pollingTimer;
-  AudioPlayer? _audioPlayer;
   int _highestKnownOrderId = 0;
 
   LatLng? _driverLocation;
@@ -47,7 +46,6 @@ class _DriverDashboardState extends State<DriverDashboard> {
   @override
   void initState() {
     super.initState();
-    _initAudioPlayer();
     _loadUserData();
     _loadMarkerIcons();
     _initializeLocation();
@@ -58,16 +56,7 @@ class _DriverDashboardState extends State<DriverDashboard> {
   @override
   void dispose() {
     _pollingTimer?.cancel();
-    _audioPlayer?.dispose();
     super.dispose();
-  }
-
-  void _initAudioPlayer() {
-    try {
-      _audioPlayer = AudioPlayer();
-    } catch (e) {
-      debugPrint("AudioPlayer init failed: $e");
-    }
   }
 
   Future<void> _loadMarkerIcons() async {
@@ -260,16 +249,23 @@ class _DriverDashboardState extends State<DriverDashboard> {
   }
 
   void _playNewOrderSound() async {
-    if (_audioPlayer == null) return;
     try {
-      await _audioPlayer!.play(AssetSource('audio/notification.mp3'));
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('🔔 New Order Available!'),
-            backgroundColor: Color(0xFF059669),
-            behavior: SnackBarBehavior.floating,
-          )
-      );
+      // Fire-and-forget local instance to prevent background linkage crashes
+      final player = AudioPlayer();
+      await player.play(AssetSource('audio/notification.mp3'));
+      
+      // Auto-cleanup after expected duration
+      Future.delayed(const Duration(seconds: 5), () => player.dispose());
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('🔔 New Order Available!'),
+              backgroundColor: Color(0xFF059669),
+              behavior: SnackBarBehavior.floating,
+            )
+        );
+      }
     } catch (e) {
       debugPrint("Audio play failed: $e");
     }
