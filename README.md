@@ -1,5 +1,8 @@
 # merantibeading
-
+flutter clean
+rm -rf ios/Pods
+rm -rf ios/Podfile.lock
+rm -rf ~/Library/Developer/Xcode/DerivedData/*
 A new Flutter project.
 
 ## Getting Started
