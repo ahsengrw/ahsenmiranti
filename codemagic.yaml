@@ -27,8 +27,8 @@ workflows:
           rm -f ios/Podfile.lock
           rm -f .flutter-plugins
           rm -f .flutter-plugins-dependencies
-          # Disable Swift Package Manager to avoid conflicts with Google Maps
-          flutter config --no-enable-ios-swift-package-manager
+          # Enable Swift Package Manager for modern Google Maps SDK support
+          flutter config --enable-ios-swift-package-manager
           flutter clean
           flutter pub get
           # Generate icons for iOS (mandatory 1024x1024 store icon)
