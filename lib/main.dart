@@ -6,10 +6,8 @@ import 'services/notification_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize Stripe placeholder (will be updated when settings are fetched)
-  Stripe.publishableKey = "pk_test_placeholder"; 
+  // Set Stripe identity (Settings will be applied before actual payment)
   Stripe.merchantIdentifier = 'merchant.com.meranti.beading';
-  await Stripe.instance.applySettings();
 
   await NotificationService.init();
   runApp(const DeliveryApp());
