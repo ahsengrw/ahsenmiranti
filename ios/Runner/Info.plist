@@ -28,6 +28,8 @@
 	<string>We need your location to show delivery progress and calculate delivery zones.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We need your location to track delivery progress even when the app is in background.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to track delivery progress even when the app is in background.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need camera access to capture proof of delivery photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
