@@ -2,6 +2,11 @@ import Flutter
 import UIKit
 import GoogleMaps
 
+import Flutter
+import UIKit
+import GoogleMaps
+import UserNotifications
+
 @main
 @objc class AppDelegate: FlutterAppDelegate {
   override func application(
@@ -12,7 +17,7 @@ import GoogleMaps
 
     // Notification setup
     if #available(iOS 10.0, *) {
-      UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
+      UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
     }
 
     GeneratedPluginRegistrant.register(with: self)
