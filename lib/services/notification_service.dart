@@ -20,7 +20,7 @@ class NotificationService {
       );
 
       await _notificationsPlugin.initialize(
-        initializationSettings: initializationSettings,
+        initializationSettings,
         onDidReceiveNotificationResponse: (details) {},
       );
 
@@ -50,10 +50,10 @@ class NotificationService {
     );
     
     await _notificationsPlugin.show(
-      id: DateTime.now().millisecond, // Unique ID
-      title: title,
-      body: body,
-      notificationDetails: platformChannelSpecifics,
+      DateTime.now().millisecond, // Unique ID
+      title, 
+      body, 
+      platformChannelSpecifics,
     );
   }
 }
