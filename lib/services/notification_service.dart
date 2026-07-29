@@ -8,7 +8,7 @@ class NotificationService {
     try {
       const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-      const DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings(
+      const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
         requestSoundPermission: true,
@@ -16,11 +16,11 @@ class NotificationService {
 
       const InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid,
-        iOS: initializationSettingsIOS,
+        iOS: initializationSettingsDarwin,
       );
 
       await _notificationsPlugin.initialize(
-        initializationSettings,
+        settings: initializationSettings,
         onDidReceiveNotificationResponse: (details) {},
       );
 
@@ -50,10 +50,10 @@ class NotificationService {
     );
     
     await _notificationsPlugin.show(
-      DateTime.now().millisecond, // Unique ID
-      title, 
-      body, 
-      platformChannelSpecifics,
+      id: DateTime.now().millisecond, // Unique ID
+      title: title, 
+      body: body, 
+      notificationDetails: platformChannelSpecifics,
     );
   }
 }
