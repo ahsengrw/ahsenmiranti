@@ -27,18 +27,14 @@ workflows:
           rm -f ios/Podfile.lock
           rm -f .flutter-plugins
           rm -f .flutter-plugins-dependencies
-          # Enable Swift Package Manager for modern Google Maps SDK support
+          # Enable Swift Package Manager
           flutter config --enable-ios-swift-package-manager
           flutter clean
           flutter pub get
-          # Generate icons for iOS (mandatory 1024x1024 store icon)
+          # Deintegrate CocoaPods as suggested by Flutter for SPM migration
+          cd ios && pod deintegrate && cd ..
+          # Generate icons
           dart run flutter_launcher_icons
-      - name: Install CocoaPods
-        script: |
-          cd ios
-          # Ensure repository is fresh
-          pod repo update
-          pod install
       - name: Build IPA for App Store
         script: |
           # Use Codemagic build number for consistency, or fetch from Apple with fallback
