@@ -6,11 +6,21 @@ import 'services/notification_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Set Stripe identity (Settings will be applied before actual payment)
-  Stripe.merchantIdentifier = 'merchant.com.meranti.beading';
-
-  await NotificationService.init();
+  // Start the app immediately to prevent black screen hangs
   runApp(const DeliveryApp());
+
+  // Initialize services in background
+  _initServices();
+}
+
+Future<void> _initServices() async {
+  try {
+    // Set Stripe identity
+    Stripe.merchantIdentifier = 'merchant.com.meranti.beading';
+    await NotificationService.init();
+  } catch (e) {
+    debugPrint("Service init failed: $e");
+  }
 }
 
 class DeliveryApp extends StatelessWidget {
