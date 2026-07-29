@@ -9,7 +9,11 @@ rm -rf ios/Podfile.lock
 rm -rf ~/Library/Developer/Xcode/DerivedData/*
 
 
-A new Flutter project.
+flutter pub get
+
+cd ios
+
+pod install --repo-update
 
 ## Getting Started
 
