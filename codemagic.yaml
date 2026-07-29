@@ -20,18 +20,17 @@ workflows:
           keychain add-certificates
       - name: Set up project configuration
         script: |
-          # Nuclear clean to remove all Windows paths and remnants
-          rm -rf ios/Flutter
+          # Nuclear clean to remove all CocoaPods remnants
           rm -rf ios/Pods
           rm -f ios/Podfile.lock
           rm -f .flutter-plugins
           rm -f .flutter-plugins-dependencies
-          # Enable Swift Package Manager
+          
+          # Enable and use Swift Package Manager
           flutter config --enable-ios-swift-package-manager
           flutter clean
           flutter pub get
-          # Deintegrate CocoaPods as suggested by Flutter for SPM migration
-          cd ios && pod deintegrate && cd ..
+          
           # Generate icons
           dart run flutter_launcher_icons
       - name: Build IPA for App Store
