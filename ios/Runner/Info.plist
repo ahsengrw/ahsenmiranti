@@ -32,8 +32,19 @@
 	<string>We need camera access to capture proof of delivery photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need photo library access to upload profile pictures or proof of delivery.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need permission to save proof of delivery photos to your library.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need microphone access for communication purposes.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Bluetooth is used to improve location accuracy for deliveries.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Bluetooth is used to improve location accuracy for deliveries.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+		<string>remote-notification</string>
+	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>googlemaps</string>
