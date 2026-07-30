@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../services/auth_service.dart';
@@ -249,6 +249,8 @@ class _DriverDashboardState extends State<DriverDashboard> {
   }
 
   void _playNewOrderSound() async {
+    // Disabled to prevent crash
+    /*
     try {
       // Fire-and-forget local instance to prevent background linkage crashes
       final player = AudioPlayer();
@@ -269,6 +271,7 @@ class _DriverDashboardState extends State<DriverDashboard> {
     } catch (e) {
       debugPrint("Audio play failed: $e");
     }
+    */
   }
 
   Future<void> _updateOrderStatus(int orderId, String status) async {
