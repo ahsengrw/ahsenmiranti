@@ -1,10 +1,13 @@
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'dart:io';
+// Emergency removal of local notifications to fix iOS launch crash
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'dart:async';
 
 class NotificationService {
-  static final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
+  // static final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
+    // Disabled to prevent crash
+    /*
     try {
       const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -16,7 +19,7 @@ class NotificationService {
 
       const InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid,
-        iOS: initializationSettingsDarwin,
+        darwin: initializationSettingsDarwin,
       );
 
       await _notificationsPlugin.initialize(
@@ -32,9 +35,12 @@ class NotificationService {
     } catch (e) {
       print("NotificationService init error: $e");
     }
+    */
   }
 
   static Future<void> showNotification(String title, String body) async {
+    // Disabled to prevent crash
+    /*
     const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'delivery_updates',
       'Delivery Updates',
@@ -46,7 +52,7 @@ class NotificationService {
     
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
-      iOS: const DarwinNotificationDetails(),
+      darwin: const DarwinNotificationDetails(),
     );
     
     await _notificationsPlugin.show(
@@ -55,5 +61,6 @@ class NotificationService {
       body: body, 
       notificationDetails: platformChannelSpecifics,
     );
+    */
   }
 }
